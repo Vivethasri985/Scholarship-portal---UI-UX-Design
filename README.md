@@ -1,4 +1,4 @@
-# Scholarship-portal-UI-UX-Design
+
 # Online Scholarship Application Portal
 
 A front-end web application developed for a **UID project** to simplify the scholarship application process for students and administrators. This project allows users to create an account, log in, submit a scholarship application, and track its status. It also provides an admin dashboard to review submitted applications and update their status.
