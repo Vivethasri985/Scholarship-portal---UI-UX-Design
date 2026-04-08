@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Application Details</title>
+<link rel="stylesheet" href="auth-style.css">
+</head>
+
+<body>
+
+<div class="top-bar">
+    <h1>Amrita Vishwa Vidyapeetham</h1>
+    <img src="amrita-logo.png">
+</div>
+
+<div class="auth-wrapper">
+<div class="data-card">
+
+<h2 style="text-align:center;color:#A6192E;">Applicant Application Form</h2>
+
+<div id="applicationDetails" style="margin-top:20px;"></div>
+
+<div class="auth-actions">
+<a href="admin-dashboard.html" class="auth-btn">Back to Dashboard</a>
+</div>
+
+</div>
+</div>
+
+<script>
+
+let username = localStorage.getItem("viewApplicationUser");
+
+let allApplications = JSON.parse(localStorage.getItem("portalApplications")) || {};
+
+let app = allApplications[username];
+
+let container = document.getElementById("applicationDetails");
+
+if (!app) {
+    container.innerHTML = "<p>No application data found.</p>";
+} else {
+
+    let appId = document.createElement("p");
+    appId.innerHTML = "<b>Application ID:</b> " + app.applicationId;
+    container.appendChild(appId);
+
+    if(app.formData){
+        const labels = {
+            applicantName: "Applicant Name",
+            dob: "Date of Birth",
+            gender: "Gender",
+            emailid: "Email ID",
+            contactNumber: "Contact Number",
+            phoneNumber: "Alternate Phone Number",
+            residentialAddress: "Residential Address",
+            schoolname: "School Name",
+            yearofcompletion: "Year of Completion",
+            educationboard: "Education Board",
+            schooladdress: "School Address",
+            Percentage: "Overall Percentage",
+            Degree: "Degree Level",
+            campusSelect: "Campus",
+            examType: "Entrance Exam Type",
+            examScore: "Entrance Exam Score",
+            Course: "Course",
+            scholarshipType: "Scholarship Type",
+            Fname: "Father's Name",
+            FOcc: "Father's Occupation",
+            Mname: "Mother's Name",
+            MOcc: "Mother's Occupation",
+            Siblings: "Number of Siblings",
+            income: "Annual Family Income",
+            Financialjustification: "Financial Justification",
+            incomeCertificate: "Income Certificate",
+            markSheet: "12th Mark Sheet",
+            aadharCard: "Aadhar Card",
+            sportscertificate: "Sports Certificate",
+            commcert: "Community Certificate",
+            recletter: "Recommendation Letter"
+        };
+
+        for(let key in app.formData){
+
+            let value = app.formData[key];
+
+            if(key === "reviewConfirmation"){
+                continue;
+            }
+
+            if(!value || value.trim() === ""){
+                value = "Not Filled";
+            }
+
+
+            let label = labels[key] || key;
+            let row = document.createElement("p");
+
+            row.innerHTML = "<b>" + label + ":</b> " + value;
+
+            container.appendChild(row);
+
+        }
+
+    } else {
+
+        let msg = document.createElement("p");
+        msg.innerHTML = "Application details not stored.";
+        container.appendChild(msg);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

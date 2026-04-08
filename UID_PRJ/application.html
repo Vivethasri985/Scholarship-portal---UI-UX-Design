@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amrita Scholarship Portal</title>
+    <link rel="stylesheet" href="portal-style.css">
+</head>
+
+<body>
+
+<!-- UNIVERSITY HEADER -->
+<div class="top-bar">
+    <h1>Amrita Vishwa Vidyapeetham</h1>
+    <img src="amrita-logo.png" alt="Amrita Logo">
+</div>
+
+<div class="main-wrapper">
+    <div class="page-title">Scholarship Application Portal</div>
+
+    <form id="applicationForm">
+
+        <!-- APPLICANT DETAILS -->
+        <div class="form-card">
+            <h2>Applicant Details</h2>
+
+            <label class="required">Applicant Name</label>
+            <input type="text" id="applicantName" name="applicantName" required>
+
+            <label class="required">Date of Birth</label>
+            <input type="date" name="dob" required >
+
+            <label class="required">Gender</label>
+            <div class="radio-set">
+                <input type="radio" name="gender" value="Male" required> Male
+                <input type="radio" name="gender" value="Female"> Female
+                <input type="radio" name="gender" value="Other"> Other
+            </div>
+
+            <label class="required">Email ID</label>
+            <input type="email" name="emailid" required>
+
+            <label class="required">Contact Number</label>
+            <div class="contact-box">
+                <input type="tel" id="contactNumber" name="contactNumber" placeholder="10-digit mobile number" required>
+            </div>
+            <small id="contactError"></small>
+
+            <label>Alternate Phone Number</label>
+            <input type="tel" placeholder="10-digit mobile number" name="phoneNumber">
+
+            <label class="required">Residential Address</label>
+            <textarea name="residentialAddress" rows="3" required></textarea>
+        </div>
+
+        <!-- SCHOOL DETAILS -->
+        <div class="form-card">
+            <h2>School Education Details</h2>
+
+            <label class="required">Name of the School</label>
+            <input type="text" name="schoolname" required>
+
+            <label class="required">Year of Completion</label>
+            <input type="number" name="yearofcompletion" placeholder="YYYY" required>
+
+            <label class="required">Education Board</label>
+            <select name="educationboard" required>
+                <option>State Board</option>
+                <option>CBSE</option>
+                <option>ICSE</option>
+            </select>
+
+            <label>School Address </label>
+            <textarea name="schooladdress" rows="2"></textarea>
+
+            <label class="required">Overall Percentage in 12th</label>
+            <input type="number"name="Percentage" min="0" max="100" step="0.1" placeholder="Example: 95 or 95.5" required
+>
+        </div>
+
+        <!-- PROGRAMME INFO -->
+        <div class="form-card">
+            <h2>Programme Information</h2>
+
+            <label class="required">Degree Level</label>
+            <select name="Degree" required>
+                <option>B.Tech</option>
+                <option>B.Arch</option>
+                <option>M.Tech</option>
+                <option>MBA</option>
+                <option>PhD</option>
+            </select>
+
+            <label class="required">Campus</label>
+            <select id="campusSelect" name="campusSelect" required>
+                <option value="">Select Campus</option>
+                <option>Amritapuri</option>
+                <option>Amaravati</option>
+                <option>Bengaluru</option>
+                <option>Chennai</option>
+                <option>Coimbatore</option>
+                <option>Faridabad</option>
+                <option>Kochi</option>
+                <option>Mysuru</option>
+                <option>Nagercoil</option>
+                <option>Haridwar</option>
+            </select>
+
+            <label class="required">Entrance Exam Type </label>
+            <select id="examType" name="examType" required>
+                <option value="">Select Exam</option>
+                <option value="AEEE">AEEE</option>
+                <option value="JEE">JEE</option>
+            </select>
+
+            <label class="required">Entrance Exam Score (%)</label>
+            <input type="number" id="examScore" name="examScore" placeholder="Enter score or rank" required>
+
+            <label class="required">Pursuing Course</label>
+            <input type="text" name="Course" placeholder="Eg: Artificial Intelligence" required>
+        </div>
+
+        <!-- SCHOLARSHIP TYPE -->
+        <div class="form-card">
+            <h2>Scholarship Type</h2>
+
+            <label class="required">Select Category</label>
+            <select id="scholarshipType" name="scholarshipType" required>
+                <option>Merit Scholarship</option>
+                <option>Need-Based Scholarship</option>
+                <option>Minority Scholarship</option>
+                <option>Sports Scholarship</option>
+            </select>
+        </div>
+
+        <!-- FAMILY INFO -->
+        <div class="form-card">
+            <h2>Family Information</h2>
+
+            <label class="required">Father's Name</label>
+            <input type="text" name="Fname" required>
+
+            <label class="required">Father's Occupation</label>
+            <input type="text" name="FOcc" required>
+
+            <label class="required">Mother's Name</label>
+            <input type="text" name="Mname" required>
+
+            <label class="required">Mother's Occupation</label>
+            <input type="text" name="MOcc" required>
+
+            <label>Number of Siblings</label>
+            <input type="number" name="Siblings" min="0">
+        </div>
+
+        <!-- FINANCIAL INFO -->
+        <div class="form-card">
+            <h2>Financial Background</h2>
+
+            <label class="required">Total Annual Family Income (INR)</label>
+            <input type="number" name="income" required>
+
+            <label class="required">Financial Justification</label>
+            <textarea rows="4" name="Financialjustification" required></textarea>
+        </div>
+
+        <!-- DOCUMENTS -->
+        <div class="form-card">
+            <h2>Supporting Documents</h2>
+
+            <label class="required">Income Certificate</label>
+            <input type="file" name="incomeCertificate" required>
+
+            <label class="required">12th Mark Sheet</label>
+            <input type="file" name="markSheet" required>
+
+            <label class="required">Aadhar Card</label>
+            <input type="file" name="aadharCard" required>
+
+            <label>Sports Certificate </label>
+            <input type="file" name="sportscertificate">
+
+            <label>Community Certificate </label>
+            <input type="file" name="commcert">
+
+            <label>Recommendation Letter</label>
+            <input type="file" name="recletter">
+        </div>
+
+        <!-- REVIEW SECTION -->
+        <div class="form-card">
+            <h2>Review Application</h2>
+
+            <div class="review-box">
+                <input
+                    type="checkbox"
+                    id="reviewCheck"
+                    required
+                    oninvalid="this.setCustomValidity('Kindly review and confirm the details before submitting.')"
+                    onchange="this.setCustomValidity('')"
+                >
+                <label for="reviewCheck" class="review-label">
+                    I have reviewed all the entered details and confirm that the information provided is correct.
+                </label>
+            </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="form-card">
+            <button type="submit" class="submit-btn">Submit Application</button>
+            <p style="text-align:center; margin-top:15px; font-size:14px;">
+                Need help? Contact: 
+                <span style="color:#A6192E; font-weight:600;">
+                    scholarship@amrita.edu
+                </span>
+            </p>
+        </div>
+
+    </form>
+</div>
+
+<script src="portal-script.js"></script>
+</body>
+</html>

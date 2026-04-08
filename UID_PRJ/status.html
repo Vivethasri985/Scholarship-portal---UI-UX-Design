@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Status</title>
+    <link rel="stylesheet" href="auth-style.css">
+</head>
+<body>
+
+<div class="top-bar">
+    <h1>Amrita Vishwa Vidyapeetham</h1>
+    <img src="amrita-logo.png" alt="Amrita Logo">
+</div>
+
+<div class="auth-wrapper">
+    <div class="data-card">
+        <h2 style="color:#A6192E; border-bottom:2px solid #A6192E; padding-bottom:8px; margin-top:0; text-align:center;">
+            Application Status
+        </h2>
+
+        <div class="status-row">
+            <span class="status-label">Application ID:</span>
+            <span id="statusApplicationId">-</span>
+        </div>
+
+        <div class="status-row">
+            <span class="status-label">Applicant Name:</span>
+            <span id="statusApplicantName">-</span>
+        </div>
+
+        <div class="status-row">
+            <span class="status-label">Scholarship Type:</span>
+            <span id="statusScholarshipType">-</span>
+        </div>
+
+        <div class="status-row">
+            <span class="status-label">Campus:</span>
+            <span id="statusCampus">-</span>
+        </div>
+
+        <div class="status-row">
+            <span class="status-label">Current Status:</span>
+            <span id="statusCurrent">-</span>
+        </div>
+
+        <div class="status-row">
+            <span class="status-label">Message:</span>
+            <span id="statusMessage">Your application has been submitted and is awaiting review.</span>
+        </div>
+
+        <div class="status-row">
+            <span class="status-label">Further Details Contact:</span>
+            <span>scholarship@amrita.edu</span>
+        </div>
+        
+        <div class="auth-actions">
+            <a href="#" class="auth-btn" id="statusBackBtn" onclick="goBackFromStatus()">Back to Portal</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function goBackFromStatus() {
+    let adminStatusSource = localStorage.getItem("adminStatusSource");
+
+    if (adminStatusSource === "admin-dashboard") {
+        localStorage.removeItem("statusViewUser");
+        localStorage.removeItem("adminStatusSource");
+        window.location.href = "admin-dashboard.html";
+    } else {
+        localStorage.removeItem("currentLoggedInUser");
+        localStorage.removeItem("statusViewUser");
+        localStorage.removeItem("adminStatusSource");
+        window.location.href = "index.html";
+    }
+}
+
+let currentUser = localStorage.getItem("currentLoggedInUser");
+let previewUser = localStorage.getItem("statusViewUser");
+let adminStatusSource = localStorage.getItem("adminStatusSource");
+
+let viewUser = currentUser || previewUser;
+
+if (adminStatusSource === "admin-dashboard") {
+    document.getElementById("statusBackBtn").textContent = "Back to Previous";
+} else {
+    document.getElementById("statusBackBtn").textContent = "Back to Portal";
+}
+
+let allApplications = JSON.parse(localStorage.getItem("portalApplications")) || {};
+let currentApplication = viewUser ? allApplications[viewUser] : null;
+
+if (!currentApplication) {
+    document.getElementById("statusApplicationId").textContent = "Not Available";
+    document.getElementById("statusApplicantName").textContent = "Not Available";
+    document.getElementById("statusScholarshipType").textContent = "Not Available";
+    document.getElementById("statusCampus").textContent = "Not Available";
+    document.getElementById("statusCurrent").textContent = "Not Submitted";
+    document.getElementById("statusMessage").textContent = "No application has been submitted for this account.";
+} else {
+    let form = currentApplication.formData || {};
+
+    document.getElementById("statusApplicationId").textContent = currentApplication.applicationId;
+
+    document.getElementById("statusApplicantName").textContent =
+        form["Applicant Name"] || form.applicantName || "Not Available";
+
+    document.getElementById("statusScholarshipType").textContent =
+        form["Scholarship Type"] || form.scholarshipType || "Not Available";
+
+    document.getElementById("statusCampus").textContent =
+        form["Campus"] || form.campusSelect || "Not Available";
+
+    document.getElementById("statusCurrent").textContent = currentApplication.status;
+
+    let message = "Your application has been submitted successfully and is awaiting review.";
+
+    if (currentApplication.status === "Under Review") {
+        message = "Your application is currently under review by the admin.";
+    } else if (currentApplication.status === "Approved") {
+        message = "Your application has been approved.";
+    } else if (currentApplication.status === "Rejected") {
+        message = "Your application has been rejected.";
+    }
+
+    document.getElementById("statusMessage").textContent = message;
+}
+</script>
+
+</body>
+</html>

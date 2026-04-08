@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="auth-style.css">
+</head>
+<body>
+
+<div class="top-bar">
+    <h1>Amrita Vishwa Vidyapeetham</h1>
+    <img src="amrita-logo.png" alt="Amrita Logo">
+</div>
+
+<div class="auth-wrapper">
+    <div class="data-card">
+        <h2 style="color:#A6192E; border-bottom:2px solid #A6192E; padding-bottom:8px; margin-top:0; text-align:center;">
+            Admin Dashboard
+        </h2>
+
+        <div style="margin-top: 20px;">
+            <label for="applicationSelector" style="font-weight:700;">Select Application</label>
+            <select id="applicationSelector" onchange="syncSelectedApplication()">
+                <option value="">Select an application</option>
+            </select>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Applicant Name</th>
+                        <th>Scholarship Type</th>
+                        <th>Campus</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top:20px; text-align:center;">
+            <button class="action-btn" onclick="updateSelectedStatus('Under Review')">Mark Under Review</button>
+            <button class="action-btn" onclick="updateSelectedStatus('Approved')">Approve</button>
+            <button class="action-btn" onclick="updateSelectedStatus('Rejected')">Reject</button>
+        </div>
+
+        <div style="margin-top:15px; text-align:center;">
+            <button id="viewAppBtn" class="action-btn" onclick="viewApplication()">View Application Form</button>
+        </div>
+
+        <div class="auth-actions">
+            <a href="#" class="auth-btn" onclick="openSelectedStudentStatus()">View Student Status Screen</a>
+            <a href="index.html" class="auth-btn">Back to Portal</a>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedUsername = "";
+
+function renderApplications() {
+
+    let allApplications = JSON.parse(localStorage.getItem("portalApplications")) || {};
+    let tableBody = document.getElementById("adminTableBody");
+    let selector = document.getElementById("applicationSelector");
+
+    tableBody.innerHTML = "";
+    selector.innerHTML = '<option value="">Select an application</option>';
+
+    let usernames = Object.keys(allApplications);
+
+    if (usernames.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="5">No applications available.</td>
+            </tr>
+        `;
+        selectedUsername = "";
+        return;
+    }
+
+    usernames.forEach(function(username){
+
+        let app = allApplications[username];
+        let form = app.formData || {};
+
+        let applicantName = form["Applicant Name"] || form.applicantName || "Not Available";
+        let scholarshipType = form["Scholarship Type"] || form.scholarshipType || "Not Available";
+        let campus = form["Campus"] || form.campusSelect || form.campus || "Not Available";
+        let option = document.createElement("option");
+        option.value = username;
+        option.textContent = app.applicationId + " - " + applicantName;
+        selector.appendChild(option);
+
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${app.applicationId}</td>
+            <td>${applicantName}</td>
+            <td>${scholarshipType}</td>
+            <td>${campus}</td>
+            <td>${app.status}</td>
+        `;
+        tableBody.appendChild(row);
+
+    });
+
+    if (!selectedUsername || !allApplications[selectedUsername]) {
+        selectedUsername = usernames[0];
+    }
+
+    selector.value = selectedUsername;
+}
+
+function syncSelectedApplication() {
+    selectedUsername = document.getElementById("applicationSelector").value;
+}
+
+function updateSelectedStatus(newStatus) {
+    let allApplications = JSON.parse(localStorage.getItem("portalApplications")) || {};
+
+    if (!selectedUsername) {
+        alert("Please select an application first.");
+        return;
+    }
+
+    if (!allApplications[selectedUsername]) {
+        alert("Selected application not found.");
+        return;
+    }
+
+    allApplications[selectedUsername].status = newStatus;
+    localStorage.setItem("portalApplications", JSON.stringify(allApplications));
+
+    renderApplications();
+    alert("Application status updated to " + newStatus + ".");
+}
+
+function openSelectedStudentStatus() {
+    let allApplications = JSON.parse(localStorage.getItem("portalApplications")) || {};
+
+    if (!selectedUsername) {
+        alert("Please select an application first.");
+        return;
+    }
+
+    if (!allApplications[selectedUsername]) {
+        alert("Selected application not found.");
+        return;
+    }
+
+    localStorage.setItem("statusViewUser", selectedUsername);
+    localStorage.setItem("adminStatusSource", "admin-dashboard");
+    window.location.href = "status.html";
+}
+
+function viewApplication() {
+
+    let allApplications = JSON.parse(localStorage.getItem("portalApplications")) || {};
+
+    if (!selectedUsername) {
+        alert("Please select an application first.");
+        return;
+    }
+
+    if (!allApplications[selectedUsername]) {
+        alert("Application not found.");
+        return;
+    }
+
+    localStorage.setItem("viewApplicationUser", selectedUsername);
+
+    window.location.href = "view-application.html";
+}
+
+renderApplications();
+</script>
+
+</body>
+</html>
